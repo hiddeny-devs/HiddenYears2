@@ -14,7 +14,7 @@
                   "price_multiplier": 0.05
                 }
               ],
-              "gives": [{ "item": "hy:letter_time1", "quantity": 1 }],
+              "gives": [{ "item": "hy:letter_4", "quantity": 1 }],
               "trader_exp": 10,
               "max_uses": 2,
               "reward_exp": true
