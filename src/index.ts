@@ -424,6 +424,9 @@ mc.world.afterEvents.itemCompleteUse.subscribe((event) => {
     case "hy:fuel_metal_stick":
       PLAYER.applyDamage(2);
       break;
+    case "hy:bark":
+      PLAYER.sendMessage([{ translate: "hy.message.eat_bark" }]);
+      break;
     default:
       break;
   }
