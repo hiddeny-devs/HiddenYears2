@@ -28,6 +28,7 @@
         }
       },
       "minecraft:hover_text_color": "aqua",
+      "tag:hy:copper_foods": {},
       "tag:dict:crops": {},
       "tag:dict:crops.apple": {}
     },

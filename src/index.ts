@@ -3,6 +3,15 @@ import * as hy from "./utils.js";
 import * as hydata from "./data.js";
 import * as hytext from "./text.js";
 
+/** 清除铜食物食用次数 */
+mc.system.runInterval(() => {
+  const PLAYERS = mc.world.getPlayers();
+  PLAYERS.forEach((players) => {
+    players.setDynamicProperty("hy:copper_foods", 0);
+    console.warn("[hy2]铜食物使用次数已归零");
+  });
+}, 18000);
+
 /** 处理阅读物及任务书
  * @todo 迁移数驱文件
  */
@@ -284,6 +293,19 @@ mc.world.afterEvents.itemUse.subscribe((event) => {
 mc.world.afterEvents.itemCompleteUse.subscribe((event) => {
   const ITEM: mc.ItemStack = event.itemStack;
   const PLAYER: mc.Player = event.source;
+  /** 用`hy:copper_foods`来标记一个物品为铜食物，并统计其食用次数
+   * 铜食物食用12次后会中毒
+   */
+  if (ITEM.hasTag("hy:copper_foods")) {
+    let eatFrequency = PLAYER.getDynamicProperty("hy:copper_foods") as number;
+    if (eatFrequency === undefined)
+      PLAYER.setDynamicProperty("hy:copper_foods", 0);
+    PLAYER.setDynamicProperty("hy:copper_foods", eatFrequency++);
+    if (eatFrequency > 12) {
+      PLAYER.addEffect("poison", 100);
+      PLAYER.setDynamicProperty("hy:copper_foods", 0);
+    }
+  }
   switch (ITEM.typeId) {
     case "hy:honey_candy":
       PLAYER.addEffect("saturation", 600);

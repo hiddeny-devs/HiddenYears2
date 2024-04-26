@@ -2,6 +2,13 @@ import * as mc from "@minecraft/server";
 import * as hy from "./utils.js";
 import * as hydata from "./data.js";
 import * as hytext from "./text.js";
+mc.system.runInterval(() => {
+  const PLAYERS = mc.world.getPlayers();
+  PLAYERS.forEach((players) => {
+    players.setDynamicProperty("hy:copper_foods", 0);
+    console.warn("[hy2]铜食物使用次数已归零");
+  });
+}, 18000);
 hy.createQuestBook(hydata.HyQuest1st);
 hy.createStoryForm("hy:story_book");
 for (let i = 0; i <= 10; i++) {
@@ -256,6 +263,16 @@ mc.world.afterEvents.itemUse.subscribe((event) => {
 mc.world.afterEvents.itemCompleteUse.subscribe((event) => {
   const ITEM = event.itemStack;
   const PLAYER = event.source;
+  if (ITEM.hasTag("hy:copper_foods")) {
+    let eatFrequency = PLAYER.getDynamicProperty("hy:copper_foods");
+    if (eatFrequency === undefined)
+      PLAYER.setDynamicProperty("hy:copper_foods", 0);
+    PLAYER.setDynamicProperty("hy:copper_foods", eatFrequency++);
+    if (eatFrequency > 12) {
+      PLAYER.addEffect("poison", 100);
+      PLAYER.setDynamicProperty("hy:copper_foods", 0);
+    }
+  }
   switch (ITEM.typeId) {
     case "hy:honey_candy":
       PLAYER.addEffect("saturation", 600);

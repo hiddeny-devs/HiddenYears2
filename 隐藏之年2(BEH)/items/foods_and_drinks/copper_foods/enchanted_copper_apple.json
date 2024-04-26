@@ -29,6 +29,7 @@
         }
       },
       "minecraft:hover_text_color": "light_purple",
+      "tag:hy:copper_foods": {},
       "tag:dict:crops": {},
       "tag:dict:crops.apple": {}
     },
